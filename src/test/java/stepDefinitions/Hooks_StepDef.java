@@ -17,7 +17,6 @@ public class Hooks_StepDef extends BasePage {
     public void setUp() {
         WebDriver driver = new Browser(BrowserType.CHROME);
         driver.get("https://www.thegreatcourses.com");
-        setDriver(driver);
     }
 
     @After

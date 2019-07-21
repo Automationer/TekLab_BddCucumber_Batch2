@@ -1,6 +1,7 @@
 package com.thegreatcourses.utility;
 
 import com.thegreatcourses.utility.EnumTypes.BrowserType;
+import com.thegreatcourses.utility.components.SeleniumWaits;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,18 +13,23 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static com.thegreatcourses.base.BasePage.setDriver;
+
 public class Browser implements WebDriver {
 
     private BrowserType browserType;
-    private final int timeout = 30;
+    private final int timeout = 10;
     private final String chromeDriverPath = "/Users/yilizatiabudusaimaiti/IdeaProjects/TekLabAutomation/TheGreatCourses/src/main/resources/chromedriver";
     private final String firefoxDriverPath = "/Users/yilizatiabudusaimaiti/IdeaProjects/TheGreatCourses/src/main/resources/geckodriver";
     private static WebDriver driver;
+    private SeleniumWaits seleniumWaits;
 
     public Browser(BrowserType browserType) {
+        seleniumWaits = new SeleniumWaits();
         this.browserType = browserType;
         createDriver(browserType);
-        driver().manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+        setDriver(driver);
+        seleniumWaits.waitImplicitly(timeout, TimeUnit.SECONDS);
     }
 
     private WebDriver createDriver(BrowserType browserType) {
@@ -35,9 +41,11 @@ public class Browser implements WebDriver {
             case FIREFOX:
                 driver = firefoxDriver();
                 break;
+
             default:
                 throw new RuntimeException("invalid browser name");
         }
+
         return driver();
     }
 
@@ -60,7 +68,7 @@ public class Browser implements WebDriver {
         return new FirefoxDriver();
     }
 
-    protected static WebDriver driver() {
+    public static WebDriver driver() {
         return driver;
     }
 

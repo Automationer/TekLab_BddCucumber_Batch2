@@ -2,53 +2,15 @@ package com.thegreatcourses.utility;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 
 import static com.thegreatcourses.base.BasePage.getDriver;
+import static com.thegreatcourses.utility.components.SeleniumWaits.waitForPageLoadComplete;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Commons {
-
-    public void waitAbit(int second) {
-        try {
-            Thread.sleep(second * 1000);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-    }
-
-    public void waitAbit() {
-        try {
-            Thread.sleep(1500);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-    }
-
-    public WebElement waitUntilClickable(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), 15);
-        WebElement waitElement = null;
-        for (int i = 0; i < 2; i++) {
-            waitElement = wait.until(ExpectedConditions.elementToBeClickable(element));
-            waitAbit(1);
-        }
-        return waitElement;
-    }
-
-    public void click(WebElement clickable) {
-        clickable.click();
-        waitForPageLoadComplete();
-    }
-
-    public void enter(WebElement text_box, String input) {
-        text_box.sendKeys(input);
-    }
 
     public void login(WebElement username, WebElement password, Keys submit, String... credentials) { // varArgs
         username.sendKeys(credentials[0]);
@@ -56,18 +18,10 @@ public class Commons {
         waitForPageLoadComplete();
     }
 
-    private static void waitForPageLoadComplete() {
-        Wait<WebDriver> wait = new WebDriverWait(Browser.driver(), 30);
-        wait.until(driver1 -> String
-                .valueOf(((JavascriptExecutor) driver1)
-                        .executeScript("return document.readyState")).equals("complete"));
-    }
-
     public void verifyWithTitle(String expected) {
         String actual = getDriver().getTitle();
         assertThat(actual).isEqualTo(expected);
     }
-
 
     public void verifyHeader(String expected, WebElement header) {
         assertThat(expected).isEqualTo(header.getText());
@@ -102,22 +56,6 @@ public class Commons {
     }
 
 
-    public void selectDropDownByValue(WebElement dropDown, String value) {
-        Select select = new Select(dropDown);
-        select.selectByValue(value);
-    }
-
-
-    public void switchToIframe(WebElement frameElement) {
-        getDriver().switchTo().frame(frameElement);
-        waitAbit(2);
-    }
-
-    public void stepOutOfFrame() {
-        getDriver().switchTo().defaultContent();
-        waitAbit(2);
-    }
-
     public void highlight(WebElement element) {
 
         for (int i = 0; i < 2; i++) {
@@ -134,6 +72,13 @@ public class Commons {
 
     }
 
+    public void waitFor(int i) {
+        try {
+            Thread.sleep(i * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

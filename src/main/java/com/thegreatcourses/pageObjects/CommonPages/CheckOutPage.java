@@ -1,10 +1,6 @@
 package com.thegreatcourses.pageObjects.CommonPages;
 
-import com.thegreatcourses.utility.*;
-import com.thegreatcourses.utility.components.Dropdown;
-import com.thegreatcourses.utility.components.Frame;
-import com.thegreatcourses.utility.components.TextField;
-import com.thegreatcourses.utility.components.WebButton;
+import com.thegreatcourses.utility.components.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -17,12 +13,11 @@ public class CheckOutPage {
         PageFactory.initElements(getDriver(), this);
     }
 
-    private Commons commons = new Commons();
     private WebButton clickAt = new WebButton();
     private TextField typeIn = new TextField();
     private Dropdown drop = new Dropdown();
     private Frame frame = new Frame();
-
+    private SeleniumWaits seleniumWaits = new SeleniumWaits();
 
     @FindBy(id = "login-email")
     private WebElement emailAddress;
@@ -134,16 +129,16 @@ public class CheckOutPage {
     }
 
     public void placeOrder() {
-        frame.switchToIFrame(iframe_element);
+        seleniumWaits.waitForIframeAndSwitchToIt(iframe_element);
         typeIn.$(cardNumber_textBox, "5555555555554444");
         drop.$(month_dropDown).selectByValue("07");
         drop.$(year_dropDown).selectByValue("21");
         typeIn.$(securityCode_textBox, "324");
         frame.switchBackToDefault();
         clickAt.$(Continue_btn_4);
-        commons.waitAbit(2);
+        seleniumWaits.waitUntilVisible(acceptTerms_checkbox);
         clickAt.$(acceptTerms_checkbox);
-        commons.waitAbit(1);
+        seleniumWaits.waitUntilClickable(placeOrder_btn);
         clickAt.$(placeOrder_btn);
     }
 

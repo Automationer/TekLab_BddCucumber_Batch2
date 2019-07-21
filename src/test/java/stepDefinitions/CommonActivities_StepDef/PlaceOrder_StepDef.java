@@ -4,13 +4,12 @@ import com.thegreatcourses.pageObjects.CommonPages.CheckOutPage;
 import com.thegreatcourses.pageObjects.CommonPages.ChooseCourseFormatPage;
 import com.thegreatcourses.pageObjects.HeaderPageObjects.InitialCartPage;
 import com.thegreatcourses.utility.AlertImp;
-import com.thegreatcourses.utility.Commons;
+import com.thegreatcourses.utility.components.SeleniumWaits;
 import com.thegreatcourses.utility.components.WebButton;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import static com.thegreatcourses.base.BasePage.getDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PlaceOrder_StepDef {
@@ -18,9 +17,9 @@ public class PlaceOrder_StepDef {
     private ChooseCourseFormatPage chooseCourseFormatPage = new ChooseCourseFormatPage();
     private InitialCartPage initialCartPage = new InitialCartPage();
     private CheckOutPage checkOutPage = new CheckOutPage();
-    private Commons commons = new Commons();
     private WebButton clickAt = new WebButton();
     private AlertImp alert = new AlertImp();
+    private SeleniumWaits seleniumWaits = new SeleniumWaits();
 
     @Given("^Add to the shopping cart$")
     public void add_to_the_shopping_cart() {
@@ -45,10 +44,8 @@ public class PlaceOrder_StepDef {
 
     @Then("^Order should be successfully placed$")
     public void order_should_be_successfully_placed() {
-        commons.waitAbit(4);
-        String alertText = alert.getText();
+        String alertText = seleniumWaits.waitUntilAlert().getText();
         alert.accept();
-        commons.waitAbit();
         assertThat(alertText).contains("1-844-325-7820");
     }
 

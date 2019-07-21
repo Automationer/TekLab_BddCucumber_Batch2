@@ -2,6 +2,7 @@ package stepDefinitions;
 
 import com.thegreatcourses.pageObjects.HomePage;
 import com.thegreatcourses.utility.Commons;
+import com.thegreatcourses.utility.components.SeleniumWaits;
 import com.thegreatcourses.utility.components.TextField;
 import com.thegreatcourses.utility.components.WebButton;
 import cucumber.api.java.en.And;
@@ -18,6 +19,7 @@ public class HomePage_StepDef {
     private Commons commons = new Commons();
     private WebButton clickAt = new WebButton();
     private TextField typeIn = new TextField();
+    private SeleniumWaits seleniumWaits = new SeleniumWaits();
 
     @Given("^User is on home page$")
     public void user_is_on_home_page() {
@@ -66,11 +68,11 @@ public class HomePage_StepDef {
     public void enter_bad_priority_code(String arg1) {
         typeIn.$(homePage.getPriorityCode_textbox(), arg1);
         clickAt.$(homePage.getApply_btn());
-        commons.waitAbit(2);
     }
 
     @Then("^System should throw error message$")
     public void system_should_throw_error_message() {
+        seleniumWaits.waitUntilTextToBePresent(homePage.getPriorityCode_errorMsg(), "Priority Code is not valid");
         String errorMsg = homePage.getPriorityCode_errorMsg().getText();
         commons.verifyText("Priority Code is not valid", errorMsg);
     }
@@ -89,7 +91,7 @@ public class HomePage_StepDef {
 
     @Given("^Choose a bestseller course$")
     public void choose_a_bestseller_course() {
-        clickAt.$(homePage.getBestCellerCourse());
+        clickAt.$(homePage.getBestSellerCourse());
     }
 
 

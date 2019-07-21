@@ -32,7 +32,8 @@ public class VerifyCheckOutPage_StepDef {
                 .getAddToCart_btn()
                 .click();
 
-        clickAt.$(commons.waitUntilClickable(initialCartPage.getCart_btn()));
+        commons.waitFor(2);
+        clickAt.$(initialCartPage.getCart_btn());
 
         clickAt.$(shoppingCartPage
                 .getCheckout_btn()

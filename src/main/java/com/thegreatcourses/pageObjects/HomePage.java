@@ -3,6 +3,7 @@ package com.thegreatcourses.pageObjects;
 import com.thegreatcourses.pageObjects.CourseCategoriesPages.ProfessionalCoursesPage;
 import com.thegreatcourses.pageObjects.HeaderPageObjects.SignInSection;
 import com.thegreatcourses.utility.Commons;
+import com.thegreatcourses.utility.components.SeleniumWaits;
 import com.thegreatcourses.utility.components.WebButton;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,8 +18,8 @@ public class HomePage {
         PageFactory.initElements(getDriver(), this);
     }
 
-    private Commons commons = new Commons();
     private WebButton clickAt = new WebButton();
+    private SeleniumWaits seleniumWaits = new SeleniumWaits();
 
     @FindBy(xpath = "(//a[contains(text(),'Sign In')])[2]")
     private WebElement signIn_btn;
@@ -29,7 +30,7 @@ public class HomePage {
     @FindBy(xpath = "(//a[@class='next'])[2]")
     private WebElement rightArrow_sign;
 
-    @FindBy(xpath = "//img[@alt='Professional'][2]") // "[alt='Professional']:nth-child(1)"
+    @FindBy(css = "[alt='Professional']:nth-child(1)") // "[alt='Professional']:nth-child(1)"
     private WebElement professionalCourses;
 
     @FindBy(css = "[id='search']")
@@ -65,8 +66,8 @@ public class HomePage {
     @FindBy(xpath = "//ul[@class='f-right-h-list']/li/a")
     private WebElement aboutUs_link;
 
-    @FindBy(css = "span img[alt='The Everyday Gourmet: Rediscovering the Lost Art of Cooking']")
-    private WebElement bestCellerCourse;
+    @FindBy(css = "a[title='Fundamentals of Photography']")
+    private WebElement bestSellerCourse;
 
     public SignInSection clickOnSignIn() {
         clickAt.$(signIn_btn);
@@ -121,13 +122,13 @@ public class HomePage {
         return aboutUs_link;
     }
 
-    public WebElement getBestCellerCourse() {
-        return bestCellerCourse;
+    public WebElement getBestSellerCourse() {
+        return bestSellerCourse;
     }
 
     public ProfessionalCoursesPage goto_ProfessionalCoursesPage() {
         clickAt.$(rightArrow_sign);
-        commons.waitAbit(1);
+        seleniumWaits.waitUntilVisible(professionalCourses);
         clickAt.$(professionalCourses);
         return ProfessionalCoursesPage.instantiate();
     }
